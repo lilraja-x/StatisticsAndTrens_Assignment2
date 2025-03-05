@@ -1,31 +1,33 @@
 """
-    This is the template file for the statistics and trends assignment.
-    You will be expected to complete all the sections and
-    make this a fully working, documented file.
-    You should NOT change any function, file or variable names,
-    if they are given to you here.
-    Make use of the functions presented in the lectures
-    and ensure your code is PEP-8 compliant, including docstrings.
+This is the template file for the statistics and trends assignment.
+You will be expected to complete all the sections and
+make this a fully working, documented file.
+You should NOT change any function, file, or variable names,
+if they are given to you here.
+Make use of the functions presented in the lectures
+and ensure your code is PEP-8 compliant, including docstrings.
 """
-from corner import corner
+
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
-import scipy.stats as ss
 import seaborn as sns
 
 
 def plot_relational_plot(df):
     """
-    Creates a scatter plot to show the relationship between customer location (Latitude & Longitude) and churn score.
+    Creates a scatter plot to show the relationship between 
+    customer location (Latitude & Longitude) and churn score.
 
     :param df: Pandas DataFrame containing the dataset.
     """
     plt.figure(figsize=(10, 6))
-    scatter = plt.scatter(df['Longitude'], df['Latitude'], c=df['Churn Score'], cmap='coolwarm', alpha=0.5)
+    scatter = plt.scatter(
+        df['Longitude'], df['Latitude'],
+        c=df['Churn Score'], cmap='coolwarm', alpha=0.5
+    )
     plt.xlabel('Longitude')
     plt.ylabel('Latitude')
-    plt.title('Customer Location (Latitude & Longitude) vs Churn Score (Realtional)')
+    plt.title('Customer Location (Latitude & Longitude) vs Churn Score')
     plt.colorbar(scatter, label="Churn Score")
     plt.savefig('relational_plot.png')
     plt.show()
@@ -33,7 +35,8 @@ def plot_relational_plot(df):
 
 def plot_categorical_plot(df):
     """
-    Creates a bar plot to visualize the count of customers based on their contract type.
+    Creates a bar plot to visualize the count of customers 
+    based on their contract type.
 
     :param df: Pandas DataFrame containing the dataset.
     """
@@ -42,7 +45,6 @@ def plot_categorical_plot(df):
     plt.xlabel('Contract Type')
     plt.ylabel('Number of Customers')
     plt.title('Customer Count by Contract Type')
-    plt.xticks()
     plt.savefig('categorical_plot.png')
     plt.show()
 
@@ -55,11 +57,13 @@ def plot_statistical_plot(df):
     """
     plt.figure(figsize=(10, 6))
     numeric_df = df.select_dtypes(include=['number'])
-    sns.heatmap(numeric_df.corr(), annot=True, cmap='coolwarm', fmt='.2f', linewidths=0.5)
+    sns.heatmap(
+        numeric_df.corr(), annot=True, cmap='coolwarm',
+        fmt='.2f', linewidths=0.5
+    )
     plt.title('Correlation Heatmap')
     plt.savefig('statistical_plot.png')
     plt.show()
-
 
 
 def statistical_analysis(df, col: str):
@@ -74,7 +78,6 @@ def statistical_analysis(df, col: str):
     stddev = df[col].std()
     skew = df[col].skew()
     excess_kurtosis = df[col].kurtosis()
-
     return mean, stddev, skew, excess_kurtosis
 
 
@@ -95,7 +98,6 @@ def preprocessing(df):
     return df
 
 
-
 def writing(moments, col):
     """
     Prints the statistical moments and interprets skewness and kurtosis.
@@ -103,11 +105,13 @@ def writing(moments, col):
     :param moments: Tuple containing mean, stddev, skew, and kurtosis.
     :param col: Column name for which statistics are computed.
     """
-    print(f'For the attribute {col}:')
-    print(f'Mean = {moments[0]:.2f}, '
+    print(
+        f'For the attribute {col}:\n'
+        f'Mean = {moments[0]:.2f}, '
         f'Standard Deviation = {moments[1]:.2f}, '
-        f'Skewness = {moments[2]:.2f}, and '
-        f'Excess Kurtosis = {moments[3]:.2f}.')
+        f'Skewness = {moments[2]:.2f}, '
+        f'Excess Kurtosis = {moments[3]:.2f}.'
+    )
 
     if moments[2] > 2:
         skewness_interpretation = 'highly right-skewed'
@@ -128,7 +132,6 @@ def writing(moments, col):
         kurtosis_interpretation = 'mesokurtic (normal distribution)'
 
     print(f'The data is {skewness_interpretation} and {kurtosis_interpretation}.')
-    return
 
 
 def main():
@@ -145,7 +148,6 @@ def main():
 
     moments = statistical_analysis(df, col)
     writing(moments, col)
-    return
 
 
 if __name__ == '__main__':
